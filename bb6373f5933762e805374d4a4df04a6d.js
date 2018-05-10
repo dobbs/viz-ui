@@ -1,5 +1,5 @@
 /*
-Viz.js 2.0.0-pre.5 (Graphviz 2.40.1, Expat 2.2.5, Emscripten 1.37.36)
+Viz.js 2.0.0-pre.8 (Graphviz 2.40.1, Expat 2.2.5, Emscripten 1.37.36)
 */
 (function(global) {
 var Module = function(Module) {
@@ -52,7 +52,7 @@ function render(instance, src, options) {
   return resultString;
 }
 
-if (typeof WorkerGlobalScope !== 'undefined') {
+if (typeof importScripts === "function") {
   var instance = Module();
   
   onmessage = function(event) {
@@ -69,10 +69,10 @@ if (typeof WorkerGlobalScope !== 'undefined') {
   }
 }
 
-if (typeof define === 'function' && define.amd) {
-  define([], function() { return { render: render, Module: Module }; });
-} else if (typeof module === 'object' && module.exports) {
+if (typeof exports === 'object' && typeof module !== 'undefined') {
   module.exports = { render: render, Module: Module };
+} else if (typeof define === 'function' && define.amd) {
+  define(function() { return { render: render, Module: Module }; });
 }
 
 if (typeof global.Viz !== 'undefined') {
